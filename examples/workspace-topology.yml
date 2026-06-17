@@ -1,0 +1,67 @@
+schema_version: "1.0"
+feature: "add-user-auth"
+status: "needs-review"
+source_artifacts:
+  spec: "specs/add-user-auth/spec.md"
+  plan: "specs/add-user-auth/plan.md"
+
+summary:
+  required_areas:
+    - "frontend"
+    - "backend"
+    - "infrastructure"
+  confidence: "medium"
+  notes:
+    - "Plan indicates new login UI, auth API endpoint, and S3 state backend changes."
+    - "Reuses existing frontend and backend projects where possible."
+
+components:
+  - id: "auth-frontend"
+    area: "frontend"
+    action: "reuse"
+    blueprint: "frontend/ui-apollo"
+    existing_workspace_id: "myapp-ui"
+    project: "myapp-ui"
+    path: "workspace/frontend/myapp-ui"
+    runner: "node-runner"
+    validation:
+      - "./dev/scripts/wrapper.sh frontend:test myapp-ui"
+      - "./dev/scripts/wrapper.sh frontend:build myapp-ui"
+    confidence: "high"
+    reason: "Existing frontend project can accommodate the new login UI."
+
+  - id: "auth-backend"
+    area: "backend"
+    action: "reuse"
+    blueprint: "backend/java-graphql"
+    existing_workspace_id: "myapp-api"
+    project: "myapp-api"
+    path: "workspace/backend/myapp-api"
+    runner: "java-runner"
+    validation:
+      - "./dev/scripts/wrapper.sh backend:test myapp-api"
+    confidence: "high"
+    reason: "Existing backend project can host the new auth endpoint."
+
+  - id: "auth-infra-storage"
+    area: "infrastructure"
+    action: "reuse"
+    blueprint: "infrastructure/bootstrap-storage"
+    existing_workspace_id: "myapp-bootstrap-storage"
+    project: "myapp-bootstrap-storage"
+    path: "workspace/infrastructure/myapp-bootstrap-storage"
+    runner: "opentofu-runner"
+    validation:
+      - "./dev/scripts/wrapper.sh infrastructure:validate myapp-bootstrap-storage"
+      - "./dev/scripts/wrapper.sh infrastructure:plan myapp-bootstrap-storage"
+    confidence: "high"
+    reason: "Existing state backend bootstrap covers the required S3 config."
+
+unresolved_inputs:
+  - key: "domain"
+    question: "What domain name should be used for auth redirect URIs?"
+    default: "example.com"
+
+policies:
+  infrastructure_apply_allowed: false
+  direct_tooling_allowed: false

@@ -1,0 +1,42 @@
+schema_version: "1.0"
+
+workspace:
+  root: "workspace"
+  status: "materialized"
+
+projects:
+  - id: "myapp-api"
+    area: "backend"
+    path: "workspace/backend/myapp-api"
+    blueprint: "backend/java-graphql"
+    repository_source: "reytech-dev/java-graphql-blueprint"
+    ref: "v0.1.0"
+    runner: "java-runner"
+    validation:
+      - "./dev/scripts/wrapper.sh backend:test myapp-api"
+    status: "materialized"
+
+  - id: "myapp-ui"
+    area: "frontend"
+    path: "workspace/frontend/myapp-ui"
+    blueprint: "frontend/ui-apollo"
+    repository_source: "reytech-dev/ui-apollo-blueprint"
+    ref: "v0.2.0"
+    runner: "node-runner"
+    validation:
+      - "./dev/scripts/wrapper.sh frontend:install myapp-ui"
+      - "./dev/scripts/wrapper.sh frontend:test myapp-ui"
+      - "./dev/scripts/wrapper.sh frontend:build myapp-ui"
+    status: "materialized"
+
+  - id: "myapp-bootstrap-storage"
+    area: "infrastructure"
+    path: "workspace/infrastructure/myapp-bootstrap-storage"
+    blueprint: "infrastructure/bootstrap-storage"
+    repository_source: "reytech-dev/infra-bootstrap-storage"
+    ref: "v0.1.0"
+    runner: "opentofu-runner"
+    validation:
+      - "./dev/scripts/wrapper.sh infrastructure:validate myapp-bootstrap-storage"
+      - "./dev/scripts/wrapper.sh infrastructure:plan myapp-bootstrap-storage"
+    status: "materialized"

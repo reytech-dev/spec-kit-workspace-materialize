@@ -1,0 +1,59 @@
+schema_version: "1.0"
+
+extension:
+  id: "workspace-materialize"
+  name: "Workspace Materialize"
+  version: "1.0.0"
+  description: "Propose, materialize, validate, and report multi-repository opencode workspaces from blueprint catalogs."
+  author: "Reytech"
+  repository: "https://github.com/reytech-dev/spec-kit-workspace-materialize"
+  license: "MIT"
+
+requires:
+  speckit_version: ">=0.1.0"
+  commands:
+    - "speckit.specify"
+    - "speckit.plan"
+
+provides:
+  commands:
+    - name: "speckit.workspace.propose"
+      file: "commands/propose.md"
+      description: "Propose workspace topology from the current feature specification and plan."
+    - name: "speckit.workspace.materialize"
+      file: "commands/materialize.md"
+      description: "Materialize missing workspace repositories from the approved workspace topology."
+    - name: "speckit.workspace.check"
+      file: "commands/check.md"
+      description: "Validate blueprint catalog, workspace manifest, and materialized workspace paths."
+    - name: "speckit.workspace.status"
+      file: "commands/status.md"
+      description: "Report the current materialized workspace state and unresolved decisions."
+
+  config:
+    - name: "workspace-materialize-config.yml"
+      template: "workspace-materialize-config.template.yml"
+      description: "Workspace materialization configuration."
+      required: false
+    - name: "blueprints.yml"
+      template: "blueprints.template.yml"
+      description: "Blueprint catalog template. Project-local canonical catalog should usually live at .opencode/blueprints.yml."
+      required: false
+
+hooks:
+  after_plan:
+    command: "speckit.workspace.propose"
+    optional: true
+    prompt: "Propose workspace topology for this feature?"
+
+  before_tasks:
+    command: "speckit.workspace.check"
+    optional: true
+    prompt: "Check workspace materialization before generating tasks?"
+
+tags:
+  - "workspace"
+  - "blueprint"
+  - "multi-repo"
+  - "opencode"
+  - "materialization"

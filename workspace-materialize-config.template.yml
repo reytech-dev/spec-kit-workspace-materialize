@@ -1,0 +1,44 @@
+workspace:
+  root: "workspace"
+
+catalog:
+  project_catalog_path: ".opencode/blueprints.yml"
+  extension_catalog_fallback_path: ".specify/extensions/workspace-materialize/blueprints.yml"
+  require_pinned_refs: true
+  allowed_ref_types:
+    - "tag"
+    - "sha"
+
+manifests:
+  workspace_manifest_path: ".opencode/workspace.yml"
+  local_override_path: ".opencode/workspace.local.yml"
+  feature_topology_filename: "workspace-topology.yml"
+  proposed_topology_filename: "workspace-topology.proposed.yml"
+
+materialization:
+  default_mode: "dry-run"
+  allow_non_empty_target: false
+  allow_overwrite: false
+  allow_delete: false
+  create_missing_parent_directories: true
+  write_provenance_file: true
+  provenance_filename: ".blueprint-provenance.yml"
+
+naming:
+  project_slug_source: "repository-name"
+  default_frontend_suffix: "ui"
+  default_backend_suffix: "api"
+  default_infrastructure_suffixes:
+    bootstrap-storage: "bootstrap-storage"
+    digitalocean: "digitalocean"
+    cloudflare: "cloudflare"
+
+policies:
+  require_wrapper_commands: true
+  forbid_direct_tooling: true
+  forbid_raw_docker_compose: true
+  forbid_infrastructure_apply_by_default: true
+  require_human_approval_for_materialize: true
+  require_human_approval_for_new_repository_creation: true
+  mark_unknowns_as_unresolved: true
+  default_status: "needs-review"

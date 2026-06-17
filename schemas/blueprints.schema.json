@@ -1,0 +1,307 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/reytech-dev/spec-kit-workspace-materialize/schemas/blueprints.schema.json",
+  "title": "Blueprint Catalog",
+  "description": "Schema for the blueprint catalog file (.opencode/blueprints.yml).",
+  "type": "object",
+  "required": ["schema_version", "blueprints"],
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "description": "Schema version identifier."
+    },
+    "catalog": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Catalog identifier."
+        },
+        "name": {
+          "type": "string",
+          "description": "Human-readable catalog name."
+        },
+        "description": {
+          "type": "string",
+          "description": "Catalog description."
+        },
+        "owner": {
+          "type": "string",
+          "description": "Default owner or organization for blueprint repositories."
+        },
+        "default_ref_policy": {
+          "type": "string",
+          "description": "Default policy for how refs must be pinned."
+        },
+        "note": {
+          "type": "string",
+          "description": "Catalog-level notes or warnings."
+        }
+      }
+    },
+    "workspace": {
+      "type": "object",
+      "properties": {
+        "root": {
+          "type": "string",
+          "description": "Default workspace root directory relative to repository root."
+        }
+      }
+    },
+    "project_profiles": {
+      "type": "object",
+      "description": "Named project profiles that bundle blueprint selections.",
+      "additionalProperties": {
+        "$ref": "#/$defs/projectProfile"
+      }
+    },
+    "selection_rules": {
+      "type": "object",
+      "description": "Rules for automatic area selection based on feature characteristics.",
+      "additionalProperties": {
+        "$ref": "#/$defs/selectionRule"
+      }
+    },
+    "blueprints": {
+      "type": "object",
+      "description": "Blueprint definitions grouped by area.",
+      "additionalProperties": {
+        "type": "object",
+        "additionalProperties": {
+          "$ref": "#/$defs/blueprint"
+        }
+      }
+    },
+    "inter_blueprint_dependencies": {
+      "type": "array",
+      "description": "Dependency relationships between blueprints.",
+      "items": {
+        "$ref": "#/$defs/dependencySpec"
+      }
+    }
+  },
+  "$defs": {
+    "projectProfile": {
+      "type": "object",
+      "properties": {
+        "description": {
+          "type": "string"
+        },
+        "recommended": {
+          "type": "boolean"
+        },
+        "components": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "selectionRule": {
+      "type": "object",
+      "properties": {
+        "select_when": {
+          "type": "array",
+          "description": "Conditions that must match for this area to be selected.",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "blueprint": {
+      "type": "object",
+      "required": [
+        "id",
+        "repository",
+        "area",
+        "workspace",
+        "materialization",
+        "parameters"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique blueprint identifier in area/key format."
+        },
+        "name": {
+          "type": "string",
+          "description": "Human-readable blueprint name."
+        },
+        "description": {
+          "type": "string",
+          "description": "Human-readable description of the blueprint."
+        },
+        "repository": {
+          "type": "string",
+          "description": "Repository path (org/repo) for the blueprint source."
+        },
+        "repository_url": {
+          "type": "string",
+          "description": "Full repository URL."
+        },
+        "default_ref": {
+          "type": "string",
+          "description": "Default git ref for the blueprint."
+        },
+        "ref_type": {
+          "type": "string",
+          "description": "Type of ref (branch, tag, sha).",
+          "enum": ["branch", "tag", "sha"]
+        },
+        "area": {
+          "type": "string",
+          "description": "Functional area the blueprint serves.",
+          "enum": ["frontend", "backend", "infrastructure", "e2e", "environment"]
+        },
+        "workspace": {
+          "$ref": "#/$defs/workspaceConfig"
+        },
+        "materialization": {
+          "$ref": "#/$defs/materializationConfig"
+        },
+        "parameters": {
+          "type": "object",
+          "description": "Template parameters required for materialization.",
+          "additionalProperties": {
+            "$ref": "#/$defs/parameterDef"
+          }
+        },
+        "dependencies": {
+          "type": "object",
+          "properties": {
+            "optional": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "blueprint": { "type": "string" },
+                  "reason": { "type": "string" }
+                }
+              }
+            },
+            "recommended": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "blueprint": { "type": "string" },
+                  "reason": { "type": "string" }
+                }
+              }
+            }
+          }
+        },
+        "task_markers": {
+          "type": "array",
+          "description": "Keywords for routing tasks to this blueprint.",
+          "items": {
+            "type": "string"
+          }
+        },
+        "exports": {
+          "type": "array",
+          "description": "Output values exported by this blueprint.",
+          "items": {
+            "type": "string"
+          }
+        },
+        "imports": {
+          "type": "array",
+          "description": "Input values imported from upstream blueprints.",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "workspaceConfig": {
+      "type": "object",
+      "required": ["path_template", "command_project_template"],
+      "properties": {
+        "path_template": {
+          "type": "string",
+          "description": "Template for the materialized workspace path."
+        },
+        "command_project_template": {
+          "type": "string",
+          "description": "Template for the project name used in wrapper commands."
+        },
+        "repository_name_template": {
+          "type": "string",
+          "description": "Template for the repository name."
+        }
+      }
+    },
+    "materializationConfig": {
+      "type": "object",
+      "required": ["default_mode", "allowed_modes"],
+      "properties": {
+        "default_mode": {
+          "type": "string",
+          "enum": ["copy", "clone", "template"]
+        },
+        "allowed_modes": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": ["copy", "clone", "template"]
+          },
+          "minItems": 1
+        }
+      }
+    },
+    "parameterDef": {
+      "type": "object",
+      "required": ["description", "required", "type"],
+      "properties": {
+        "description": {
+          "type": "string",
+          "description": "Human-readable parameter description."
+        },
+        "required": {
+          "type": "boolean",
+          "description": "Whether this parameter must be supplied."
+        },
+        "type": {
+          "type": "string",
+          "description": "Parameter data type."
+        },
+        "pattern": {
+          "type": "string",
+          "description": "Regex pattern for validation."
+        },
+        "default": {
+          "description": "Default value."
+        },
+        "default_template": {
+          "type": "string",
+          "description": "Template string for deriving a default value."
+        }
+      }
+    },
+    "dependencySpec": {
+      "type": "object",
+      "required": ["from", "to", "type", "reason"],
+      "properties": {
+        "from": {
+          "type": "string",
+          "description": "Source blueprint id."
+        },
+        "to": {
+          "type": "string",
+          "description": "Target blueprint id."
+        },
+        "type": {
+          "type": "string",
+          "enum": ["optional", "recommended", "required"]
+        },
+        "reason": {
+          "type": "string",
+          "description": "Human-readable justification."
+        }
+      }
+    }
+  }
+}

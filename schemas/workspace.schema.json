@@ -1,0 +1,85 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/reytech-dev/spec-kit-workspace-materialize/schemas/workspace.schema.json",
+  "title": "Workspace Manifest",
+  "description": "Schema for the workspace manifest file (.opencode/workspace.yml).",
+  "type": "object",
+  "required": ["schema_version", "workspace", "projects"],
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "description": "Schema version identifier."
+    },
+    "workspace": {
+      "type": "object",
+      "required": ["root"],
+      "properties": {
+        "root": {
+          "type": "string",
+          "description": "Relative path to the workspace root directory."
+        },
+        "status": {
+          "type": "string",
+          "description": "Overall workspace status.",
+          "enum": ["materialized", "partial", "planned", "pending"]
+        }
+      }
+    },
+    "projects": {
+      "type": "array",
+      "description": "Materialized workspace projects.",
+      "items": {
+        "$ref": "#/$defs/project"
+      }
+    }
+  },
+  "$defs": {
+    "project": {
+      "type": "object",
+      "required": ["id", "area", "path", "runner", "status"],
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique project identifier."
+        },
+        "area": {
+          "type": "string",
+          "description": "Functional area of the project.",
+          "enum": ["frontend", "backend", "infrastructure", "e2e", "environment"]
+        },
+        "path": {
+          "type": "string",
+          "description": "Relative path to the project under the workspace root."
+        },
+        "blueprint": {
+          "type": "string",
+          "description": "Blueprint key (area/key) used to materialize this project."
+        },
+        "repository_source": {
+          "type": "string",
+          "description": "Source blueprint repository (org/repo)."
+        },
+        "ref": {
+          "type": "string",
+          "description": "Git ref (tag or SHA) at which the blueprint was materialized."
+        },
+        "runner": {
+          "type": "string",
+          "description": "Designated runner type for execution."
+        },
+        "validation": {
+          "type": "array",
+          "description": "Validation commands for this project.",
+          "items": {
+            "type": "string"
+          }
+        },
+        "status": {
+          "type": "string",
+          "description": "Materialization status of the project.",
+          "enum": ["materialized", "planned", "pending", "external", "deferred"]
+        }
+      }
+    }
+  }
+}

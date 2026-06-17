@@ -1,0 +1,162 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/reytech-dev/spec-kit-workspace-materialize/schemas/workspace-topology.schema.json",
+  "title": "Feature Workspace Topology",
+  "description": "Schema for the feature workspace topology file (specs/<feature>/workspace-topology.yml).",
+  "type": "object",
+  "required": ["schema_version", "feature", "status", "components"],
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "description": "Schema version identifier."
+    },
+    "feature": {
+      "type": "string",
+      "description": "Feature identifier."
+    },
+    "status": {
+      "type": "string",
+      "description": "Overall topology status.",
+      "enum": ["proposed", "needs-review", "approved", "rejected"]
+    },
+    "source_artifacts": {
+      "type": "object",
+      "properties": {
+        "spec": {
+          "type": "string",
+          "description": "Path to the feature specification."
+        },
+        "plan": {
+          "type": "string",
+          "description": "Path to the implementation plan."
+        }
+      }
+    },
+    "summary": {
+      "type": "object",
+      "properties": {
+        "required_areas": {
+          "type": "array",
+          "description": "Functional areas required by this feature.",
+          "items": {
+            "type": "string",
+            "enum": ["frontend", "backend", "infrastructure", "e2e", "environment"]
+          }
+        },
+        "confidence": {
+          "type": "string",
+          "enum": ["high", "medium", "low"]
+        },
+        "notes": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "components": {
+      "type": "array",
+      "description": "Workspace components proposed for this feature.",
+      "items": {
+        "$ref": "#/$defs/component"
+      }
+    },
+    "unresolved_inputs": {
+      "type": "array",
+      "description": "Inputs that require human resolution before materialization.",
+      "items": {
+        "$ref": "#/$defs/unresolvedInput"
+      }
+    },
+    "policies": {
+      "type": "object",
+      "properties": {
+        "infrastructure_apply_allowed": {
+          "type": "boolean",
+          "description": "Whether infrastructure apply is permitted (should be false)."
+        },
+        "direct_tooling_allowed": {
+          "type": "boolean",
+          "description": "Whether direct project tooling is permitted (should be false)."
+        }
+      }
+    }
+  },
+  "$defs": {
+    "component": {
+      "type": "object",
+      "required": ["id", "area", "action", "path", "runner", "validation"],
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique component identifier within the topology."
+        },
+        "area": {
+          "type": "string",
+          "description": "Functional area of the component.",
+          "enum": ["frontend", "backend", "infrastructure", "e2e", "environment"]
+        },
+        "action": {
+          "type": "string",
+          "description": "Proposed action for this component.",
+          "enum": ["reuse", "materialize", "defer", "manual"]
+        },
+        "blueprint": {
+          "type": "string",
+          "description": "Blueprint key (area/key) for materialization."
+        },
+        "existing_workspace_id": {
+          "type": "string",
+          "description": "ID of an existing workspace project to reuse."
+        },
+        "project": {
+          "type": "string",
+          "description": "Derived project identifier."
+        },
+        "path": {
+          "type": "string",
+          "description": "Target path within the workspace."
+        },
+        "runner": {
+          "type": "string",
+          "description": "Designated runner type."
+        },
+        "validation": {
+          "type": "array",
+          "description": "Validation commands for this component.",
+          "items": {
+            "type": "string"
+          },
+          "minItems": 1
+        },
+        "confidence": {
+          "type": "string",
+          "enum": ["high", "medium", "low"]
+        },
+        "reason": {
+          "type": "string",
+          "description": "Justification for the blueprint selection and action."
+        }
+      }
+    },
+    "unresolvedInput": {
+      "type": "object",
+      "required": ["key", "question"],
+      "properties": {
+        "key": {
+          "type": "string",
+          "description": "Input key for command-line resolution."
+        },
+        "question": {
+          "type": "string",
+          "description": "Human-readable question to resolve the input."
+        },
+        "default": {
+          "type": "string",
+          "description": "Default value if not overridden."
+        }
+      }
+    }
+  }
+}
