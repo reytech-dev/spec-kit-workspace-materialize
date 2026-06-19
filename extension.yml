@@ -3,7 +3,7 @@ schema_version: "1.0"
 extension:
   id: "workspace-materialize"
   name: "Workspace Materialize"
-  version: "1.0.0"
+  version: "1.0.1"
   description: "Propose, materialize, validate, and report multi-repository opencode workspaces from blueprint catalogs."
   author: "Reytech"
   repository: "https://github.com/reytech-dev/spec-kit-workspace-materialize"
