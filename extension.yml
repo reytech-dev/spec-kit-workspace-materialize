@@ -17,16 +17,16 @@ requires:
 
 provides:
   commands:
-    - name: "speckit.workspace.propose"
+    - name: "speckit.workspace-materialize.propose"
       file: "commands/propose.md"
       description: "Propose workspace topology from the current feature specification and plan."
-    - name: "speckit.workspace.materialize"
+    - name: "speckit.workspace-materialize.materialize"
       file: "commands/materialize.md"
       description: "Materialize missing workspace repositories from the approved workspace topology."
-    - name: "speckit.workspace.check"
+    - name: "speckit.workspace-materialize.check"
       file: "commands/check.md"
       description: "Validate blueprint catalog, workspace manifest, and materialized workspace paths."
-    - name: "speckit.workspace.status"
+    - name: "speckit.workspace-materialize.status"
       file: "commands/status.md"
       description: "Report the current materialized workspace state and unresolved decisions."
 
@@ -42,12 +42,12 @@ provides:
 
 hooks:
   after_plan:
-    command: "speckit.workspace.propose"
+    command: "speckit.workspace-materialize.propose"
     optional: true
     prompt: "Propose workspace topology for this feature?"
 
   before_tasks:
-    command: "speckit.workspace.check"
+    command: "speckit.workspace-materialize.check"
     optional: true
     prompt: "Check workspace materialization before generating tasks?"
 
