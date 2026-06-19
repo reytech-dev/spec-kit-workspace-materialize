@@ -1,4 +1,4 @@
-# speckit.workspace.check
+# speckit.workspace-materialize.check
 
 Validate the blueprint catalog, workspace manifest, feature topology, and actual workspace paths against configured policies.
 
@@ -9,7 +9,7 @@ Run a comprehensive validation pass over all workspace materialization artifacts
 ## Usage
 
 ```
-/speckit.workspace.check [options]
+/speckit.workspace-materialize.check [options]
 ```
 
 ### Options
@@ -169,7 +169,7 @@ Overall: pass
 
 Next Actions:
   /speckit.tasks
-  /speckit.workspace.status
+  /speckit.workspace-materialize.status
 ```
 
 ## Safety Rules

@@ -1,4 +1,4 @@
-# speckit.workspace.materialize
+# speckit.workspace-materialize.materialize
 
 Materialize missing workspace repositories from an approved workspace topology.
 
@@ -9,7 +9,7 @@ Read an approved workspace topology and create or populate workspace directories
 ## Usage
 
 ```
-/speckit.workspace.materialize [options]
+/speckit.workspace-materialize.materialize [options]
 ```
 
 ### Options
@@ -131,7 +131,7 @@ blueprint:
   blueprint_key: "backend/java-graphql"
 materialized:
   at: "<timestamp>"
-  by: "speckit.workspace.materialize"
+  by: "speckit.workspace-materialize.materialize"
   mode: "copy"
 project:
   id: "<project>-api"
@@ -208,5 +208,5 @@ In apply mode, print a summary of actions taken and the next recommended command
 After materialization:
 
 ```
-/speckit.workspace.check
+/speckit.workspace-materialize.check
 ```

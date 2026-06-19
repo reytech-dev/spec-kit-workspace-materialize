@@ -1,4 +1,4 @@
-# speckit.workspace.propose
+# speckit.workspace-materialize.propose
 
 Propose a workspace topology for the current Spec Kit feature.
 
@@ -11,7 +11,7 @@ This command does **not** clone, copy, delete, or modify application repositorie
 ## Usage
 
 ```
-/speckit.workspace.propose
+/speckit.workspace-materialize.propose
 ```
 
 No arguments are required. The command resolves the current feature directory automatically.
@@ -185,5 +185,5 @@ policies:
 After review and approval of the topology:
 
 ```
-/speckit.workspace.materialize --dry-run
+/speckit.workspace-materialize.materialize --dry-run
 ```

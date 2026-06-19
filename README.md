@@ -52,10 +52,10 @@ A feature topology (`specs/<feature>/workspace-topology.yml`) maps a specific fe
 ```
 /speckit.specify                          # Write the feature spec
 /speckit.plan                             # Create the implementation plan
-/speckit.workspace.propose                # Propose workspace topology
-/speckit.workspace.materialize --dry-run  # Preview materialization
-/speckit.workspace.materialize --apply    # Materialize repos (requires approval)
-/speckit.workspace.check                  # Validate everything
+/speckit.workspace-materialize.propose                # Propose workspace topology
+/speckit.workspace-materialize.materialize --dry-run  # Preview materialization
+/speckit.workspace-materialize.materialize --apply    # Materialize repos (requires approval)
+/speckit.workspace-materialize.check                  # Validate everything
 /speckit.tasks                            # Generate tasks
 /speckit.workspace-map.generate           # Generate workspace map
 ```
@@ -64,10 +64,10 @@ A feature topology (`specs/<feature>/workspace-topology.yml`) maps a specific fe
 
 | Command | File | Description |
 |---------|------|-------------|
-| `/speckit.workspace.propose` | `commands/propose.md` | Propose workspace topology from spec and plan |
-| `/speckit.workspace.materialize` | `commands/materialize.md` | Materialize repos from approved topology |
-| `/speckit.workspace.check` | `commands/check.md` | Validate catalog, manifest, and paths |
-| `/speckit.workspace.status` | `commands/status.md` | Print current workspace state |
+| `/speckit.workspace-materialize.propose` | `commands/propose.md` | Propose workspace topology from spec and plan |
+| `/speckit.workspace-materialize.materialize` | `commands/materialize.md` | Materialize repos from approved topology |
+| `/speckit.workspace-materialize.check` | `commands/check.md` | Validate catalog, manifest, and paths |
+| `/speckit.workspace-materialize.status` | `commands/status.md` | Print current workspace state |
 
 ## Safety Model
 
@@ -156,8 +156,8 @@ Run `/speckit.workspace-map.generate` after materialization to produce workspace
 
 If the installed Spec Kit version supports hooks:
 
-- **after_plan**: Prompts to run `/speckit.workspace.propose` after `speckit.plan`
-- **before_tasks**: Prompts to run `/speckit.workspace.check` before `speckit.tasks`
+- **after_plan**: Prompts to run `/speckit.workspace-materialize.propose` after `speckit.plan`
+- **before_tasks**: Prompts to run `/speckit.workspace-materialize.check` before `speckit.tasks`
 
 If hooks are not supported, run these commands manually at the indicated lifecycle points.
 

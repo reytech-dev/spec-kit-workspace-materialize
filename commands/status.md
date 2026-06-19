@@ -1,4 +1,4 @@
-# speckit.workspace.status
+# speckit.workspace-materialize.status
 
 Report the current materialized workspace state and unresolved decisions.
 
@@ -9,7 +9,7 @@ Print a human-readable overview of the workspace materialization state. Entirely
 ## Usage
 
 ```
-/speckit.workspace.status
+/speckit.workspace-materialize.status
 ```
 
 No arguments are required. The command resolves the current feature directory automatically.
@@ -62,7 +62,7 @@ Validation commands (wrapper-only):
     ./dev/scripts/wrapper.sh infrastructure:plan <project>-bootstrap-storage
 
 Recommended next command:
-  /speckit.workspace.check
+  /speckit.workspace-materialize.check
 ```
 
 ### Active Feature Topology
@@ -98,7 +98,7 @@ Projects by area:
   (none)
 
 Recommended next command:
-  /speckit.workspace.propose
+  /speckit.workspace-materialize.propose
 ```
 
 ## Safety Rules
