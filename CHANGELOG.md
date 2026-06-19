@@ -1,3 +1,9 @@
+## [1.0.2](https://github.com/reytech-dev/spec-kit-workspace-materialize/compare/v1.0.1...v1.0.2) (2026-06-19)
+
+### Bug Fixes
+
+* **namespace:** fix namespace of extension commands files ([fa19555](https://github.com/reytech-dev/spec-kit-workspace-materialize/commit/fa19555022485a444703e7c6ac8da0e0c515fa52))
+
 ## [1.0.1](https://github.com/reytech-dev/spec-kit-workspace-materialize/compare/v1.0.0...v1.0.1) (2026-06-19)
 
 ### Bug Fixes
